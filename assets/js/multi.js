@@ -79,20 +79,20 @@ var messages = [];
 var height = 80;
 var startY = document.body.offsetHeight - height - 5;
 
-function AaddMessage(msg) {
+function AaddMessage(url) {
 
     var total = messages.length;
 
     for (var i = 0; i < total; i++) {
 
-        var msg = messages[i];
+        // var url = messages[i];
         //var pos = startY - ((i + 1) * height);
         var pos = -((i + 1) * height);
 
-        TweenLite.to(msg, 0.5, { y: pos });
+        TweenLite.to(url, 0.5, { y: pos });
     }
 
-    var newMessage = $("<div class='message'>" + total + "세트<br> 경기영상:" + msg + "</div>");
+    var newMessage = $("<div class='message'>" + total + "세트 <a href="+url+">경기영상</a> </div>");
 
     messageBoxA.append(newMessage);
     messages.unshift(newMessage);
@@ -105,20 +105,20 @@ function AaddMessage(msg) {
     });
 }
 
-function BaddMessage(msg) {
+function BaddMessage(url) {
 
     var total = messages.length;
 
     for (var i = 0; i < total; i++) {
 
-        var msg = messages[i];
+        // var url = messages[i];
         //var pos = startY - ((i + 1) * height);
         var pos = -((i + 1) * height);
 
-        TweenLite.to(msg, 0.5, { y: pos });
+        TweenLite.to(url, 0.5, { y: pos });
     }
 
-    var newMessage = $("<div class='message'>" + total + "세트<br> 경기영상:" + msg + "</div>");
+    var newMessage = $("<div class='message'>" + total + "세트 <a href="+url+">경기영상</a> </div>");
 
     messageBoxB.append(newMessage);
     messages.unshift(newMessage);
@@ -304,6 +304,9 @@ const get_my_playstyle = (fileName) => {
         }).done(function (data) {
             console.log("jsonp", data);
             alert('A : ' + data.A.result + ' B : ' + data.B.result);
+            
+            AaddMessage()
+            AaddMessage()
 
             $.ajax({
                 url: myurl + '/history/analysis',
