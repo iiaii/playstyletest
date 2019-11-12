@@ -57,6 +57,7 @@ connection.onstream = function (event) {
             const main_stream_id = streamid.id;
 
             if (event.type === 'remote' && viewers > 0 && main_stream_id === streamid.id && flag) {
+                flag = false;
                 remoteVideosContainer.appendChild(videoTag);
             }
             console.log(main_stream_id)
