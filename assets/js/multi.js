@@ -12,6 +12,8 @@ let uploadNum = 0;
 // 시청자 수
 let viewers = -1;
 
+let flag = false;
+
 connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
 
 connection.session = {
@@ -40,23 +42,25 @@ connection.onstream = function (event) {
     stream = event.stream;
 
     if (event.type === 'local' && viewers < 0) {
-        localVideosContainer.appendChild(videoTag)
+        localVideosContainer.appendChild(videoTag);
     }
 
     if (event.type === 'remote' && viewers >= 0) {
-        remoteVideosContainer.appendChild(videoTag)
+        remoteVideosContainer.appendChild(videoTag);
     }
 };
 
 // let roomid = document.getElementById('txt-roomid');
 // roomid.value = connection.token();
 // roomid.value -> room_id
-const room_id = 1;
+const room_id = '1';
 
 // 입장 버튼
 document.getElementById('streaming-start').onclick = async function () {
 
     $.get(myurl + "/room/" + room_id, function (view_count) {
+        viewers = view_count;
+
         if (view_count > 1) {
             document.getElementById('game-start').style.display = 'none';
             document.getElementById('end-A').style.display = 'none';
@@ -64,8 +68,6 @@ document.getElementById('streaming-start').onclick = async function () {
             document.getElementById('game-start').style.display = 'inline-block';
             document.getElementById('game-over').style.display = 'inline-block';
         }
-
-        viewers = view_count;
         console.log('!! ', view_count);
     });
 
