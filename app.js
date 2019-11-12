@@ -13,20 +13,13 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
-let roomID;
-//이건 방관리하는거임. 흠.....처음엔 false 그 후엔 true만 반환.
-let ROOM = [];
-
 let viewers = -1;
 app.get('/room/:roomId', function (req, res) {
-    // roomID = req.params.roomId;
-
-    // if (ROOM[roomID] === undefined) { // 방을 새로 만들었을때
-    //   ROOM[roomID] = 0;
-    // } else { // 방이 이미 생성되었을때
-    //   ROOM[roomID]++;
-    // }
-    res.send(++viewers);
+    try {
+        return res.status(200).json({viewers:(++viewers)});
+    } catch (error) {
+        return res.status(400).json({error: error});
+    }
 });
 
 // let A = 0;

@@ -58,10 +58,11 @@ const room_id = '1';
 // 입장 버튼
 document.getElementById('streaming-start').onclick = async function () {
 
+    console.log(myurl + "/room/" + room_id);
     $.get(myurl + "/room/" + room_id, function (view_count) {
-        viewers = view_count;
+        viewers = view_count.viewers;
 
-        if (view_count > 1) {
+        if (viewers > 1) {
             document.getElementById('game-start').style.display = 'none';
             document.getElementById('end-A').style.display = 'none';
             document.getElementById('end-B').style.display = 'none';
