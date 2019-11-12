@@ -16,8 +16,9 @@ let viewers;
 connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
 
 connection.session = {
-    // audio: false,
     video: true,
+    Audio: false,
+    audio: false
 };
 
 connection.sdpConstraints.mandatory = {
@@ -33,7 +34,8 @@ connection.mediaConstraints = {
         height: {
             min: 720
         }
-    }
+    },
+    audio: false,
 };
 
 let flag = true;
