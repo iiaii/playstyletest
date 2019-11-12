@@ -267,7 +267,7 @@ const get_my_playstyle = (fileName) => {
             crossDomain: true,
             timeout: 500000,
             success: function (data) { 
-                console.log("jsonp", result);
+                console.log("jsonp", data);
                 alert('A : ' + data.A.result + '\n B : ' + data.B.result); 
             
                 $.ajax({
@@ -278,7 +278,7 @@ const get_my_playstyle = (fileName) => {
                         console.log('history 등록',data);
                     },
                     error: function (data) {
-                        console.log(data.toString());
+                        console.log('err',data.toString());
                     }
                 });
             },
