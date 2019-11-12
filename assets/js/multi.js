@@ -16,7 +16,14 @@ let viewers;
 connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
 
 connection.session = {
-    video: true,
+    video: {
+        width: {
+            min: 1280
+        },
+        height: {
+            min: 720
+        }
+    },
 };
 
 connection.sdpConstraints.mandatory = {
@@ -264,15 +271,15 @@ const get_my_playstyle = (fileName) => {
             type: 'GET',
             dataType: 'jsonp',
             success: function (data) { 
-                console.log(data);
+                console.log("jsonp", data);
                 alert('A : ' + data.A.result + '\n B : ' + data.B.result); 
 
                 $.ajax({
                     url : myurl+'/history/analysis',
-                    method : 'post',
-                    data : data,
+                    method : 'POST',
+                    dataType : 'json',
                     success : function (data) {
-                        console.log(data);
+                        console.log('history 등록',data);
                     },
                     error : function (data) {
                         console.log(data.toString());
