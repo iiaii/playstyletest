@@ -41,11 +41,11 @@ connection.onstream = function (event) {
     videoTag = event.mediaElement;
     stream = event.stream;
 
-    if (event.type === 'local' && viewers < 0) {
+    if (event.type === 'local' && viewers <= 0) {
         localVideosContainer.appendChild(videoTag);
     }
 
-    if (event.type === 'remote' && viewers >= 0) {
+    if (event.type === 'remote' && viewers > 0) {
         remoteVideosContainer.appendChild(videoTag);
     }
 };
@@ -69,7 +69,7 @@ document.getElementById('streaming-start').onclick = async function () {
             document.getElementById('game-start').style.display = 'inline-block';
             document.getElementById('game-over').style.display = 'inline-block';
         }
-        console.log('!! ', view_count);
+        console.log('!! ', viewers);
     });
 
     document.getElementById('intro').innerHTML = "";
