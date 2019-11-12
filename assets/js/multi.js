@@ -1,7 +1,7 @@
 const myurl = "https://myplaystyle.shop" //"https://localhost:3000";
 
-const localVideosContainer = document.getElementById('local-videos-container')
-const remoteVideosContainer = document.getElementById('remote-videos-container')
+const localVideosContainer = document.getElementById('local-videos-container');
+const remoteVideosContainer = document.getElementById('remote-videos-container');
 
 let connection = new RTCMultiConnection();
 let videoTag;
@@ -47,12 +47,12 @@ connection.onstream = function (event) {
         if (event.type === 'local' && viewers <= 0 && flag) {
             flag = false;
             localVideosContainer.appendChild(videoTag);
-            $.post(myurl + "/main_stream/"+event.streamid, function (result) {
-                console.log("streamid put "+result);
+            $.post(myurl + "/main_stream/" + event.streamid, function (result) {
+                console.log("streamid put " + result);
             });
         }
-    
-        console.log(viewers+' !!!!!!!!', event.streamid);
+
+        console.log(viewers + ' !!!!!!!!', event.streamid);
         $.get(myurl + "/main_stream/", function (streamid) {
             const main_stream_id = streamid.id;
 
@@ -71,9 +71,40 @@ connection.onstream = function (event) {
 // roomid.value -> room_id
 const room_id = '1';
 
+var messageBox = $('#message-box-A');
+var messages = [];
+
+var height = 80;
+var startY = document.body.offsetHeight - height - 5;
+
+function addMessage(msg) {
+
+    var total = messages.length;
+
+    for (var i = 0; i < total; i++) {
+
+        var msg = messages[i];
+        //var pos = startY - ((i + 1) * height);
+        var pos = -((i + 1) * height);
+
+        TweenLite.to(msg, 0.5, { y: pos });
+    }
+
+    var newMessage = $("<div class='message'>" + total + "세트 </div>");
+
+    messageBox.append(newMessage);
+    messages.unshift(newMessage);
+
+    TweenLite.fromTo(newMessage, 0.5, {
+        y: height * 2
+    }, {
+        y: 0,
+        autoAlpha: 1
+    });
+}
+
 // 입장 버튼
 document.getElementById('streaming-start').onclick = async function () {
-
     $.post(myurl + "/viewers/", function (view_count) {
         viewers = view_count.viewers;
 
@@ -86,11 +117,12 @@ document.getElementById('streaming-start').onclick = async function () {
         }
         console.log('!! ', viewers);
     });
-
-    document.getElementById('intro').innerHTML = "";
-
-    document.getElementById('streaming-start').style.display = 'none';
     
+    document.getElementById('intro').innerHTML = "";
+    
+    document.getElementById('play-record').style.display = 'inline-block';
+    document.getElementById('streaming-start').style.display = 'none';
+
     // document.getElementById('scoreboard').style.display = 'block';
     // document.getElementById('player-a-score').style.display = 'block';
     // document.getElementById('player-b-score').style.display = 'block';

@@ -3878,9 +3878,9 @@
 			width: 200px;
 			height: 100%;
 			top: 0;
-			right: 0;
+			left: 0;
 			padding: 10px;
-			background: #dadada;
+			/* background: #01CDCF */
 		  }
 
 		  #message-box-B {
@@ -3891,11 +3891,12 @@
 			top: 0;
 			right: 0;
 			padding: 10px;
-			background: #dadada;
+			/* background: #01CDCF */
 		  }
 		  
 		  .message {
-			width: 250px;
+			box-sizing: border-box;
+			width: 190px;
 			height: 75px;
 			background: #1B3D79;
 			color: #fff;
@@ -3907,4 +3908,3 @@
 			opacity: 0;
 			visibility: hidden;
 		  }
-
