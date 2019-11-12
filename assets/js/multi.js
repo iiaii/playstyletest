@@ -195,9 +195,8 @@ reset_Btn.addEventListener("click", async () => {
 
 setInterval(function () {
     $.get(myurl+"/score/", function (data) {
-        // flag = response.result;
-        score = data
-        console.log(score)
+        document.getElementById('A-score').innerHTML = data.A;
+        document.getElementById('B-score').innerHTML = data.B;
     });
 }, 2000);
 
