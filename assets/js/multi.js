@@ -261,33 +261,32 @@ const get_my_playstyle = (fileName) => {
         xhr = new XMLHttpRequest();
 
         $.ajax({
-            url: "https://analysis.myplaystyle.shop/analysis/" + fileName,
+            url: "https://analysis.myplaystyle.shop/analysis/" + fileName+"?callback=?",
             type: 'GET',
             dataType: 'jsonp',
             timeout: 500000,
-            success: function (data) { 
-                console.log("jsonp", data);
-                alert('A : ' + data.A.result + '\n B : ' + data.B.result); 
-
-                $.ajax({
-                    url : myurl+'/history/analysis',
-                    method : 'POST',
-                    dataType : 'json',
-                    success : function (data) {
-                        console.log('history 등록',data);
-                    },
-                    error : function (data) {
-                        console.log(data.toString());
-                    }
-                });
-            },
-            error: function (data) { 
-                console.log(data)
-                alert('error!'); 
-            },
+            success: history_record,
+            error: history_record,
         });
         
     } catch (error) {
         alert("분석실패");
     }
+}
+
+const history_record = (data) => { 
+    console.log("jsonp", data);
+    alert('A : ' + data.A.result + '\n B : ' + data.B.result); 
+
+    $.ajax({
+        url : myurl+'/history/analysis',
+        method : 'POST',
+        dataType : 'json',
+        success : function (data) {
+            console.log('history 등록',data);
+        },
+        error : function (data) {
+            console.log(data.toString());
+        }
+    });
 }
