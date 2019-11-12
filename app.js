@@ -14,9 +14,17 @@ app.get('/', function (req, res) {
 });
 
 let viewers = -1;
-app.get('/room/:roomId', function (req, res) {
+app.post('/viewers/', function (req, res) {
     try {
         return res.status(200).json({viewers:(++viewers)});
+    } catch (error) {
+        return res.status(400).json({error: error});
+    }
+});
+
+app.get('/viewers/', function (req, res) {
+    try {
+        return res.status(200).json({viewers:viewers});
     } catch (error) {
         return res.status(400).json({error: error});
     }

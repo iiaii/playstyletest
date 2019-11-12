@@ -39,7 +39,7 @@ connection.onstream = function (event) {
     videoTag = event.mediaElement;
     stream = event.stream;
 
-    $.get(myurl + "/room/" + room_id, function (view_count) {
+    $.get(myurl + "/viewers/", function (view_count) {
         const viewers = view_count.viewers;
 
         if (event.type === 'local' && viewers <= 0) {
@@ -52,7 +52,7 @@ connection.onstream = function (event) {
         console.log(viewers+' !!!!!!!!', event.streamid);
         $.get(myurl + "/main_stream/", function (streamid) {
             const main_stream_id = streamid.id;
-            
+
             if (event.type === 'remote' && viewers > 0 && main_stream_id === streamid.id) {
                 remoteVideosContainer.appendChild(videoTag);
             }
@@ -70,11 +70,10 @@ const room_id = '1';
 // 입장 버튼
 document.getElementById('streaming-start').onclick = async function () {
 
-    console.log(myurl + "/room/" + room_id);
-    $.get(myurl + "/room/" + room_id, function (view_count) {
+    $.post(myurl + "/viewers/", function (view_count) {
         viewers = view_count.viewers;
 
-        if (viewers < 1) {
+        if (viewers <= 1) {
             document.getElementById('game-start').style.display = 'none';
             document.getElementById('end-A').style.display = 'none';
             document.getElementById('end-B').style.display = 'none';
