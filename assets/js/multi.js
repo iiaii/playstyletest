@@ -264,6 +264,7 @@ const get_my_playstyle = (fileName) => {
             url: "https://analysis.myplaystyle.shop/analysis/" + fileName+"?callback=?",
             type: 'GET',
             dataType: 'jsonp',
+            crossDomain: true,
             timeout: 500000,
             success: history_record,
             error: history_record,
@@ -275,13 +276,14 @@ const get_my_playstyle = (fileName) => {
 }
 
 const history_record = (data) => { 
-    console.log("jsonp", data);
+    const result = JSON.parse(data);
+    console.log("jsonp", result);
     alert('A : ' + data.A.result + '\n B : ' + data.B.result); 
 
     $.ajax({
         url : myurl+'/history/analysis',
         method : 'POST',
-        dataType : 'json',
+        data : result,
         success : function (data) {
             console.log('history 등록',data);
         },
