@@ -18,7 +18,7 @@ let roomID;
 let ROOM = [];
 
 let viewers = -1;
-app.get('/room/:roomId', async function (req, res) {
+app.get('/room/:roomId', function (req, res) {
     roomID = req.params.roomId;
 
     // if (ROOM[roomID] === undefined) { // 방을 새로 만들었을때
@@ -26,7 +26,7 @@ app.get('/room/:roomId', async function (req, res) {
     // } else { // 방이 이미 생성되었을때
     //   ROOM[roomID]++;
     // }
-    await viewers++;
+    viewers++;
     res.send(viewers);
 });
 
@@ -73,7 +73,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('disconnect', () => {
-        await viewers--;
+        viewers--;
         console.log('disconnected ' + socket.id);
         io.sockets.in(room_info[socket.id]).emit("disconnect", 'diconnect');
         room_info[socket.id] = null;
