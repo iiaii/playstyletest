@@ -12,7 +12,7 @@ let uploadNum = 0;
 // 시청자 수
 let viewers = -1;
 
-let flag = false;
+let flag = true;
 
 connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
 
@@ -41,13 +41,14 @@ connection.onstream = function (event) {
     videoTag = event.mediaElement;
     stream = event.stream;
 
-    if (event.type === 'local' && viewers <= 0) {
+    if (event.type === 'remote' && viewers > 0 && flag) {
+        flag = false;
+        remoteVideosContainer.appendChild(videoTag);
+    }
+    if (event.type === 'local' && viewers <= 0 && flag) {
         localVideosContainer.appendChild(videoTag);
     }
 
-    if (event.type === 'remote' && viewers > 0) {
-        remoteVideosContainer.appendChild(videoTag);
-    }
 };
 
 // let roomid = document.getElementById('txt-roomid');
