@@ -36,7 +36,7 @@ let main_stream_id = '';
 app.post('/main_stream/:id', function (req, res) {
     
     try {
-        main_stream_id = id;
+        main_stream_id = req.params.id;
         return res.status(200).json({result:"success"});
     } catch (error) {
         return res.status(400).json({error: error});
