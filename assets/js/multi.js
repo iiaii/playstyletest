@@ -267,18 +267,17 @@ const get_my_playstyle = (fileName) => {
             crossDomain: true,
             timeout: 500000,
             success: function (data) { 
-                const result = JSON.parse(data);
                 console.log("jsonp", result);
                 alert('A : ' + data.A.result + '\n B : ' + data.B.result); 
             
                 $.ajax({
-                    url : myurl+'/history/analysis',
-                    method : 'POST',
-                    data : result,
-                    success : function (data) {
+                    url: myurl+'/history/analysis',
+                    method: 'POST',
+                    data: result,
+                    success: function (data) {
                         console.log('history 등록',data);
                     },
-                    error : function (data) {
+                    error: function (data) {
                         console.log(data.toString());
                     }
                 });
