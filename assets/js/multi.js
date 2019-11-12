@@ -24,10 +24,16 @@ connection.sdpConstraints.mandatory = {
     offerToReceiveVideo: true
 };
 
-connection.mediaConstraints = {
-    video: true,
-    audio: false
-};
+// connection.mediaConstraints = {
+//     video: {
+//         width: {
+//             min: 1280
+//         },
+//         height: {
+//             min: 720
+//         }
+//     },
+// };
 
 let flag = true;
 
