@@ -154,7 +154,7 @@ document.getElementById('end-A').addEventListener("click", () => {
     document.getElementById('end-A').style.display = 'none';
     document.getElementById('end-B').style.display = 'none';
 
-    $.post(myurl+"/score/A/", function (data) {
+    $.post(myurl + "/score/A/", function (data) {
         console.log('A 득점!!')
     });
 
@@ -173,7 +173,7 @@ end_B_Btn.addEventListener("click", () => {
     document.getElementById('end-A').style.display = 'none';
     document.getElementById('end-B').style.display = 'none';
 
-    $.post(myurl+"/score/B/", function (data) {
+    $.post(myurl + "/score/B/", function (data) {
         console.log('B 득점!!')
     });
 
@@ -188,14 +188,14 @@ end_B_Btn.addEventListener("click", () => {
 var reset_Btn = document.getElementById('game-over');
 reset_Btn.addEventListener("click", async () => {
     const game_name = player_a.value + " vs " + player_b.value
-    $.post(myurl+"/score/reset/"+game_name, function (data) {
+    $.post(myurl + "/score/reset/" + game_name, function (data) {
         console.log('점수 Reset!!')
     });
 });
 
 
 setInterval(function () {
-    $.get(myurl+"/score/", function (data) {
+    $.get(myurl + "/score/", function (data) {
         document.getElementById('A-score').innerHTML = data.A;
         document.getElementById('B-score').innerHTML = data.B;
     });
@@ -243,7 +243,7 @@ const upload_to_server = async (fileObject) => {
     try {
         await upload.promise();
         $("div.success").fadeIn(300).delay(1500).fadeOut(400);
-        $.post(myurl+"/history/"+fileName, function (data) {
+        $.post(myurl + "/history/" + fileName, function (data) {
             console.log('점수 기록!!')
         });
         // alert("영상 업로드 성공 : " + fileName);
@@ -261,31 +261,36 @@ const get_my_playstyle = (fileName) => {
         xhr = new XMLHttpRequest();
 
         $.ajax({
-            url: "https://analysis.myplaystyle.shop/analysis/" + fileName+"?callback=?",
+            url: "https://analysis.myplaystyle.shop/analysis/" + fileName + "?callback=?",
             type: 'GET',
             dataType: 'JSONP',
             jsonpCallback: 'callback',
             crossDomain: true,
-            timeout: 500000,
-            success: function (data) { 
-                console.log("jsonp", data);
-                alert('A : ' + data.A.result + '\n B : ' + data.B.result); 
-            
-                $.ajax({
-                    url: myurl+'/history/analysis',
-                    method: 'POST',
-                    data: result,
-                    success: function (data) {
-                        console.log('history 등록',data);
-                    },
-                    error: function (data) {
-                        console.log('err',data.toString());
-                    }
-                });
-            },
-            error: function (data) { alert(data); },
+            timeout: 500000
+        }).done(function (data) {
+            console.log("jsonp", data);
+            alert('A : ' + data.A.result + ' B : ' + data.B.result);
+
+            $.ajax({
+                url: myurl + '/history/analysis',
+                method: 'POST',
+                data: result,
+                success: function (data) {
+                    console.log('history 등록', data);
+                },
+                error: function (data) {
+                    console.log('err', data.toString());
+                }
+            });
+        }).error(function (data) {
+            alert(data);
         });
-        
+        // success: function (data) { 
+
+        // },
+        // error: function (data) {  },
+        // });
+
     } catch (error) {
         alert("분석실패");
     }
