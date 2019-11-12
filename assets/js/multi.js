@@ -266,29 +266,27 @@ const get_my_playstyle = (fileName) => {
             dataType: 'jsonp',
             crossDomain: true,
             timeout: 500000,
-            success: history_record,
-            error: history_record,
+            success: function (data) { 
+                const result = JSON.parse(data);
+                console.log("jsonp", result);
+                alert('A : ' + data.A.result + '\n B : ' + data.B.result); 
+            
+                $.ajax({
+                    url : myurl+'/history/analysis',
+                    method : 'POST',
+                    data : result,
+                    success : function (data) {
+                        console.log('history 등록',data);
+                    },
+                    error : function (data) {
+                        console.log(data.toString());
+                    }
+                });
+            },
+            error: function (data) { alert(data); },
         });
         
     } catch (error) {
         alert("분석실패");
     }
-}
-
-const history_record = (data) => { 
-    const result = JSON.parse(data);
-    console.log("jsonp", result);
-    alert('A : ' + data.A.result + '\n B : ' + data.B.result); 
-
-    $.ajax({
-        url : myurl+'/history/analysis',
-        method : 'POST',
-        data : result,
-        success : function (data) {
-            console.log('history 등록',data);
-        },
-        error : function (data) {
-            console.log(data.toString());
-        }
-    });
 }
