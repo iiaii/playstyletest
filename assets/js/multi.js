@@ -263,7 +263,8 @@ const get_my_playstyle = (fileName) => {
         $.ajax({
             url: "https://analysis.myplaystyle.shop/analysis/" + fileName+"?callback=?",
             type: 'GET',
-            dataType: 'jsonp',
+            dataType: 'JSONP',
+            jsonpCallback: 'callback',
             crossDomain: true,
             timeout: 500000,
             success: function (data) { 
