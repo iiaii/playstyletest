@@ -39,11 +39,11 @@ connection.onstream = function (event) {
     videoTag = event.mediaElement;
     stream = event.stream;
 
-    if (event.type === 'local' && viewers <= 0) {
+    if (event.type === 'local' && viewers < 0) {
         localVideosContainer.appendChild(videoTag)
     }
 
-    if (event.type === 'remote' && viewers > 0) {
+    if (event.type === 'remote' && viewers >= 0) {
         remoteVideosContainer.appendChild(videoTag)
     }
 };
@@ -57,20 +57,22 @@ const room_id = 1;
 document.getElementById('streaming-start').onclick = async function () {
 
     $.get(myurl + "/room/" + room_id, function (view_count) {
-        viewers = view_count;
         if (view_count > 1) {
             document.getElementById('game-start').style.display = 'none';
             document.getElementById('end-A').style.display = 'none';
             document.getElementById('end-B').style.display = 'none';
+            document.getElementById('game-start').style.display = 'inline-block';
+            document.getElementById('game-over').style.display = 'inline-block';
         }
+
+        viewers = view_count;
         console.log('!! ', view_count);
     });
 
     document.getElementById('intro').innerHTML = "";
 
     document.getElementById('streaming-start').style.display = 'none';
-    document.getElementById('game-start').style.display = 'inline-block';
-    document.getElementById('game-over').style.display = 'inline-block';
+    
     // document.getElementById('scoreboard').style.display = 'block';
     // document.getElementById('player-a-score').style.display = 'block';
     // document.getElementById('player-b-score').style.display = 'block';
