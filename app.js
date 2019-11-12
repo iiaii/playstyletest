@@ -14,7 +14,7 @@ app.get('/', function (req, res) {
 });
 
 let viewers = -1;
-app.post('/viewers/', function (req, res) {
+app.post('/viewers/add', function (req, res) {
     try {
         return res.status(200).json({viewers:(++viewers)});
     } catch (error) {
@@ -44,40 +44,102 @@ app.post('/main_stream/:id', function (req, res) {
 });
 
 app.get('/main_stream/', function (req, res) {
-    
     try {
         return res.status(200).json({id:main_stream_id});
     } catch (error) {
         return res.status(400).json({error: error});
     }
 });
-// let A = 0;
-// let B = 0;
-// //A 득점
-// app.post('/score/A/', function (req, res) {
-//     console.log("A 득점");
-//     A++;
-// });
 
-// //B 득점
-// app.post('/score/B/', function (req, res) {
-//     console.log("B 득점");
-//     B++;
-// });
+let A = 0;
+let B = 0;
 
-// //Reset
-// app.post('/score/reset/', function (req, res) {
-//     console.log("Score Reset");
-//     A = 0;
-//     B = 0;
-// });
+let game_history_index = 0;
+let analysis_history_index = 0;
+let game_history = [];
+let analysis_history = [];
 
-// //Get Score
-// app.get('/score/', function (req, res) {
-//     console.log(A + " : " + B + " score get!");
-//     let score = { 'A': A, 'B': B };
-//     res.send(score);
-// });
+let total_game_history = [];
+
+// 게임 기록
+app.post('/history/:filename', function (req, res) {
+    try {
+        game_history[game_history_index++] = req.params.filename;
+        console.log("게임 기록 : ", A+B);
+        return res.status(200).json({result:"success"});
+    } catch (error) {
+        return res.status(400).json({error: error});
+    }
+});
+
+// 분석결과 기록
+app.post('/history/analysis', function (req, res) {
+    try {
+        analysis_history[analysis_history_index++] = req.body;
+        console.log("분석 결과 기록 : ", A+B);
+        return res.status(200).json({result:"success"});
+    } catch (error) {
+        return res.status(400).json({error: error});
+    }
+});
+
+//A 득점
+app.post('/score/A/', function (req, res) {
+    try {
+        A++;
+        console.log("A 득점");
+        return res.status(200).json({result:"success"});
+    } catch (error) {
+        return res.status(400).json({error: error});
+    }
+});
+
+//B 득점
+app.post('/score/B/', function (req, res) {
+    try {
+        B++;
+        console.log("B 득점");
+        return res.status(200).json({result:"success"});
+    } catch (error) {
+        return res.status(400).json({error: error});
+    }
+});
+
+let index = 0;
+//Reset
+app.post('/score/reset/:game_name', function (req, res) {
+    try {
+        total_game_history[index++] = {
+            'game_name' : req.params.game_name,
+            'A': A,
+            'B': B,
+            'total' : (A+B),
+            'videos_history' : game_history,
+            'analysis_history' : analysis_history,
+        };
+        A = 0;
+        B = 0;
+        game_history_index = 0;
+        analysis_history_index = 0;
+        console.log("Score Reset");
+        return res.status(200).json({result:"success"});
+    } catch (error) {
+        return res.status(400).json({error: error});
+    }
+});
+
+//Get Score
+app.get('/score/', function (req, res) {
+    try {
+        console.log(A + " : " + B + " score get!");
+        return res.status(200).json({ 
+            'A': A, 
+            'B': B 
+        });
+    } catch (error) {
+        return res.status(400).json({error: error});
+    }
+});
 
 http.listen(process.env.PORT || 3000, function () {
     console.log('listening on *:3000');
