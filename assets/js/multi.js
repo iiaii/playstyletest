@@ -167,7 +167,7 @@ document.getElementById('game-start').addEventListener("click", async () => {
 
     recorder = new RecordRTC(stream, {
         type: 'video',
-        mimeType: 'video/webm',
+        // mimeType: 'video/webm',
     });
 
     await recorder.startRecording();
@@ -239,12 +239,12 @@ setInterval(function () {
 // 블롭으로 부터 파일 객체 생성
 const make_file_from_blob = (recorder, player) => {
     const blob = recorder.getBlob()
-    const fileName = player_a.value + '_' + player_b.value + '_' + player + '_' + (++uploadNum) + '.webm';
+    const fileName = player_a.value + '_' + player_b.value + '_' + player + '_' + (++uploadNum) + '.mkv';
 
     return new File(
         [blob],
         fileName,
-        { type: 'video/webm' }
+        { type: 'video/mkv' }
     );
 }
 
@@ -292,18 +292,12 @@ const get_my_playstyle = (fileName) => {
     try {
         console.log(fileName + " 분석시작");
 
-        xhr = new XMLHttpRequest();
+        const url = "https://analysis.myplaystyle.shop/analysis/" + fileName;
 
-        $.ajax({
-            url: "https://analysis.myplaystyle.shop/analysis/" + fileName + "?callback=?",
-            type: 'GET',
-            dataType: 'JSONP',
-            jsonpCallback: 'callback',
-            crossDomain: true,
-            timeout: 500000
-        }).done(function (data) {
+        $.getJSON(url + "?callback=?", function(data) {
             console.log("jsonp", data);
             alert('A : ' + data.A.result + ' B : ' + data.B.result);
+            
             
             AaddMessage()
             AaddMessage()
@@ -319,9 +313,39 @@ const get_my_playstyle = (fileName) => {
                     console.log('err', data.toString());
                 }
             });
-        }).error(function (data) {
-            alert(data);
         });
+
+        // $.ajax({
+        //     url: "https://analysis.myplaystyle.shop/analysis/" + fileName + "?callback=?",
+        //     type: 'GET',
+        //     dataType: 'JSONP',
+        //     jsonpCallback: 'callback',
+        //     crossDomain: true,
+        //     timeout: 500000
+        // }).done(function (data) {
+        //     console.log("jsonp", data);
+        //     alert('A : ' + data.A.result + ' B : ' + data.B.result);
+            
+        //     AaddMessage()
+        //     AaddMessage()
+
+        //     $.ajax({
+        //         url: myurl + '/history/analysis',
+        //         method: 'POST',
+        //         data: result,
+        //         success: function (data) {
+        //             console.log('history 등록', data);
+        //         },
+        //         error: function (data) {
+        //             console.log('err', data.toString());
+        //         }
+        //     });
+        // }).error(function (data) {
+        //     alert(data);
+        // });
+
+
+
         // success: function (data) { 
 
         // },
