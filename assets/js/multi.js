@@ -10,9 +10,7 @@ let stream;
 // 업로드하는 영상의 수 (라운드수)
 let uploadNum = 0;
 // 시청자 수
-let viewers = -1;
-
-let flag = true;
+let viewers;
 
 connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
 
@@ -41,13 +39,26 @@ connection.onstream = function (event) {
     videoTag = event.mediaElement;
     stream = event.stream;
 
-    if (event.type === 'remote' && viewers > 0 && flag) {
-        flag = false;
-        remoteVideosContainer.appendChild(videoTag);
-    }
-    if (event.type === 'local' && viewers <= 0 && flag) {
-        localVideosContainer.appendChild(videoTag);
-    }
+    $.get(myurl + "/room/" + room_id, function (view_count) {
+        const viewers = view_count.viewers;
+
+        if (event.type === 'local' && viewers <= 0) {
+            localVideosContainer.appendChild(videoTag);
+            $.post(myurl + "/main_stream/"+event.streamid, function (result) {
+                console.log("streamid put "+result);
+            });
+        }
+    
+        console.log(viewers+' !!!!!!!!', event.streamid);
+        $.get(myurl + "/main_stream/", function (streamid) {
+            const main_stream_id = streamid.id;
+            
+            if (event.type === 'remote' && viewers > 0 && main_stream_id === streamid.id) {
+                remoteVideosContainer.appendChild(videoTag);
+            }
+            console.log(main_stream_id)
+        });
+    });
 
 };
 
@@ -63,7 +74,7 @@ document.getElementById('streaming-start').onclick = async function () {
     $.get(myurl + "/room/" + room_id, function (view_count) {
         viewers = view_count.viewers;
 
-        if (viewers > 1) {
+        if (viewers < 1) {
             document.getElementById('game-start').style.display = 'none';
             document.getElementById('end-A').style.display = 'none';
             document.getElementById('end-B').style.display = 'none';

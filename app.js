@@ -22,6 +22,27 @@ app.get('/room/:roomId', function (req, res) {
     }
 });
 
+// stream id 
+let main_stream_id = '';
+
+app.post('/main_stream/:id', function (req, res) {
+    
+    try {
+        main_stream_id = id;
+        return res.status(200).json({result:"success"});
+    } catch (error) {
+        return res.status(400).json({error: error});
+    }
+});
+
+app.get('/main_stream/', function (req, res) {
+    
+    try {
+        return res.status(200).json({id:main_stream_id});
+    } catch (error) {
+        return res.status(400).json({error: error});
+    }
+});
 // let A = 0;
 // let B = 0;
 // //A 득점
