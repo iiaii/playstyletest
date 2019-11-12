@@ -112,14 +112,15 @@ document.getElementById('streaming-start').onclick = async function () {
             document.getElementById('game-start').style.display = 'none';
             document.getElementById('end-A').style.display = 'none';
             document.getElementById('end-B').style.display = 'none';
+            document.getElementById('view-intro').style.display = 'none';
             document.getElementById('game-start').style.display = 'inline-block';
             document.getElementById('game-over').style.display = 'inline-block';
         }
         console.log('!! ', viewers);
     });
-    
+
     document.getElementById('intro').innerHTML = "";
-    
+
     document.getElementById('play-record').style.display = 'inline-block';
     document.getElementById('streaming-start').style.display = 'none';
 
@@ -250,10 +251,27 @@ const upload_to_server = async (fileObject) => {
 const get_my_playstyle = (fileName) => {
     try {
         console.log(fileName + " 분석시작");
-        $.getJSON("https://python-elb-934761745.ap-northeast-2.elb.amazonaws.com/analysis/" + fileName, function (json) {
-            alert('A : ' + json.A.result + '\n B : ' + json.B.result);
+
+        xhr = new XMLHttpRequest();
+
+        $.get({
+            url: "https://python-elb-934761745.ap-northeast-2.elb.amazonaws.com/analysis/" + fileName,
+            type: 'GET',
+            dataType: 'json',
+            success: function (json) { alert('A : ' + json.A.result + '\n B : ' + json.B.result); },
+            error: function () { alert('error!'); },
+            beforeSend: setHeader
+        });
+
+        function setHeader(xhr) {
+            xhr.setRequestHeader("Access-Control-Allow-Origin", '*');
+            xhr.setRequestHeader("Access-Control-Allow-Credentials", "true");
+            xhr.setRequestHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+            xhr.setRequestHeader("Access-Control-Max-Age", "3600");
+            xhr.setRequestHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.setRequestHeader("Accept", "application/json");
         }
-        );
     } catch (error) {
         alert("분석실패");
     }
