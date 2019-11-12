@@ -264,7 +264,7 @@ const get_my_playstyle = (fileName) => {
             url: "https://analysis.myplaystyle.shop/analysis/" + fileName,
             type: 'GET',
             dataType: 'jsonp',
-            timeout: 100000,
+            timeout: 500000,
             success: function (data) { 
                 console.log("jsonp", data);
                 alert('A : ' + data.A.result + '\n B : ' + data.B.result); 
