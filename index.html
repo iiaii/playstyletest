@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<!--
+	Typify by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+
+<head>
+	<title>PlayStyle</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+	<link rel="stylesheet" href="css/main.css" />
+	<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+</head>
+
+<body>
+
+	<!-- Banner -->
+	<section id="banner">
+		<div class="alert-box success">Success : 영상 업로드 성공 </div>
+		<div class="alert-box failure">Error : 영상 업로드 실패</div>
+
+		<!-- <div>
+			<div id="message-box-A">
+				<input id="input-player-a" placeholder="플레이어 A">
+			</div>
+		</div>
+		<div>
+			<div id="message-box-B">
+				<input id="input-player-b" placeholder="플레이어 B">
+			</div>
+		</div> -->
+
+		<h2>
+			<div id="local-videos-container"></div>
+			<div id="remote-videos-container"></div>
+			<div id="intro">
+				<strong>PlayStyle</strong> 은 여러분의 플레이를 스트리밍 분석하는 서비스입니다
+			</div>
+		</h2>
+		<p id="view-intro">now on air : <string id="viewers">10</string> viewers are watching</p>
+		<ul class="actions">
+			<li>
+				<a class="button special" id="streaming-start">스트리밍 시청하기</a>
+				<a class="button special" id="game-start" style="display: none;">경기시작</a>
+
+				<a class="button special" id="end-A" style="display: none;">
+					A win
+				</a>
+
+
+				<a class="button special" id="end-B" style="display: none;">
+					B win
+				</a>
+				<a class="button special" id="game-over" style="display: none;">경기종료</a>
+			</li>
+		</ul>
+	</section>
+
+	<!-- One -->
+	<section id="one" class="wrapper special">
+		<div class="inner">
+			<header class="major">
+				<h2>여러분의 playstyle 을 확인하세요</h2>
+			</header>
+
+			<div class="features">
+				<div class="feature">
+					<i class="fa fa-diamond"></i>
+					<h3>최정헌 vs 한예훈</h3>
+					<p>11 : 0</p>
+				</div>
+			</div>
+
+		</div>
+	</section>
+
+	<!-- Footer -->
+	<footer id="footer">
+		<div class="copyright">
+			&copy; playstyle <a href="http://cse.konkuk.ac.kr/">KU cse</a>.
+		</div>
+	</footer>
+
+	<!-- Scripts -->
+	<script src="https://sdk.amazonaws.com/js/aws-sdk-2.283.1.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://rtcmulticonnection.herokuapp.com/dist/RTCMultiConnection.min.js"></script>
+	<script src="https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js"></script>
+	<script src="https://www.WebRTC-Experiment.com/RecordRTC.js"></script>
+	<script src="js/multi.js"></script>
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/skel.min.js"></script>
+	<script src="js/util.js"></script>
+	<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+	<script src="js/main.js"></script>
+
+</body>
+
+</html>
