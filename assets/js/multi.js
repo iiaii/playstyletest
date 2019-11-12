@@ -72,13 +72,14 @@ connection.onstream = function (event) {
 // roomid.value -> room_id
 const room_id = '1';
 
-var messageBox = $('#message-box-A');
+var messageBoxA = $('#message-box-A');
+var messageBoxB = $('#message-box-B');
 var messages = [];
 
 var height = 80;
 var startY = document.body.offsetHeight - height - 5;
 
-function addMessage(msg) {
+function AaddMessage(msg) {
 
     var total = messages.length;
 
@@ -91,9 +92,35 @@ function addMessage(msg) {
         TweenLite.to(msg, 0.5, { y: pos });
     }
 
-    var newMessage = $("<div class='message'>" + total + "세트 </div>");
+    var newMessage = $("<div class='message'>" + total + "세트<br> 경기영상:" + msg + "</div>");
 
-    messageBox.append(newMessage);
+    messageBoxA.append(newMessage);
+    messages.unshift(newMessage);
+
+    TweenLite.fromTo(newMessage, 0.5, {
+        y: height * 2
+    }, {
+        y: 0,
+        autoAlpha: 1
+    });
+}
+
+function BaddMessage(msg) {
+
+    var total = messages.length;
+
+    for (var i = 0; i < total; i++) {
+
+        var msg = messages[i];
+        //var pos = startY - ((i + 1) * height);
+        var pos = -((i + 1) * height);
+
+        TweenLite.to(msg, 0.5, { y: pos });
+    }
+
+    var newMessage = $("<div class='message'>" + total + "세트<br> 경기영상:" + msg + "</div>");
+
+    messageBoxB.append(newMessage);
     messages.unshift(newMessage);
 
     TweenLite.fromTo(newMessage, 0.5, {
@@ -158,9 +185,14 @@ document.getElementById('end-A').addEventListener("click", () => {
         console.log('A 득점!!')
     });
 
+    
+
     recorder.stopRecording(async () => {
         const fileObject = make_file_from_blob(recorder, 'A');
         await upload_to_server(fileObject);
+        const file_url = "https://playstyle.s3.ap-northeast-2.amazonaws.com/videos/"+fileObject.name;
+        AaddMessage(file_url);
+
         get_my_playstyle(fileObject.name);
     });
 });
@@ -180,6 +212,8 @@ end_B_Btn.addEventListener("click", () => {
     recorder.stopRecording(async () => {
         const fileObject = make_file_from_blob(recorder, 'B');
         await upload_to_server(fileObject);
+        const file_url = "https://playstyle.s3.ap-northeast-2.amazonaws.com/videos/"+fileObject.name;
+        BaddMessage(file_url);
         get_my_playstyle(fileObject.name);
     });
 });
