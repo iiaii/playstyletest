@@ -73,6 +73,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('disconnect', () => {
+        await viewers--;
         console.log('disconnected ' + socket.id);
         io.sockets.in(room_info[socket.id]).emit("disconnect", 'diconnect');
         room_info[socket.id] = null;

@@ -1,4 +1,4 @@
-const myurl = "https://jjapaguri.herokuapp.com" //"https://localhost:3000";
+const myurl = "https://myplaystyle.shop" //"https://localhost:3000";
 
 const localVideosContainer = document.getElementById('local-videos-container')
 const remoteVideosContainer = document.getElementById('remote-videos-container')
