@@ -25,6 +25,7 @@ connection.sdpConstraints.mandatory = {
 };
 
 connection.mediaConstraints = {
+    audio: true,
     video: {
         width: {
             min: 1280
@@ -33,7 +34,6 @@ connection.mediaConstraints = {
             min: 720
         }
     },
-    audio: true,
 };
 
 let flag = true;
@@ -264,7 +264,7 @@ const get_my_playstyle = (fileName) => {
             url: "https://analysis.myplaystyle.shop/analysis/" + fileName,
             type: 'GET',
             dataType: 'jsonp',
-            timeout: 60000,
+            timeout: 100000,
             success: function (data) { 
                 console.log("jsonp", data);
                 alert('A : ' + data.A.result + '\n B : ' + data.B.result); 
