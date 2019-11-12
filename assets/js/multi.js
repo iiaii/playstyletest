@@ -35,6 +35,8 @@ connection.mediaConstraints = {
     }
 };
 
+let flag = true;
+
 connection.onstream = function (event) {
     videoTag = event.mediaElement;
     stream = event.stream;
@@ -42,7 +44,8 @@ connection.onstream = function (event) {
     $.get(myurl + "/viewers/", function (view_count) {
         const viewers = view_count.viewers;
 
-        if (event.type === 'local' && viewers <= 0) {
+        if (event.type === 'local' && viewers <= 0 && flag) {
+            flag = false;
             localVideosContainer.appendChild(videoTag);
             $.post(myurl + "/main_stream/"+event.streamid, function (result) {
                 console.log("streamid put "+result);
@@ -53,7 +56,7 @@ connection.onstream = function (event) {
         $.get(myurl + "/main_stream/", function (streamid) {
             const main_stream_id = streamid.id;
 
-            if (event.type === 'remote' && viewers > 0 && main_stream_id === streamid.id) {
+            if (event.type === 'remote' && viewers > 0 && main_stream_id === streamid.id && flag) {
                 remoteVideosContainer.appendChild(videoTag);
             }
             console.log(main_stream_id)
