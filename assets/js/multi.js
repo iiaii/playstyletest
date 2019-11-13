@@ -327,7 +327,8 @@ const get_my_playstyle = (fileName) => {
                 // Success!
                 data = JSON.parse(request.responseText);
                 // alert('A : ' + data.A.result + ' B : ' + data.A.result);
-                const file_url = "https://playstyle.s3.ap-northeast-2.amazonaws.com/videos/" + fileName;
+                let tmp = fileName.split('.');
+                const file_url = "https://playstyle.s3.ap-northeast-2.amazonaws.com/videos/" + tmp[0]+".json";
 
                 AaddMessage(file_url, data.A.result);
                 BaddMessage(file_url, data.B.result);
