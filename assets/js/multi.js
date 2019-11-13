@@ -238,7 +238,7 @@ setInterval(function () {
 // 블롭으로 부터 파일 객체 생성
 const make_file_from_blob = (recorder, player) => {
     const blob = recorder.getBlob()
-    const fileName = player_a.value + player_b.value + '_' + player + '_' + (++uploadNum) + '.mkv';
+    const fileName = player_a.value + '' + player_b.value + '_' + player + '_' + (++uploadNum) + '.mkv';
 
     return new File(
         [blob],
