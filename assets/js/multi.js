@@ -92,7 +92,7 @@ function AaddMessage(url, txt) {
         TweenLite.to(url, 0.5, { y: pos });
     }
 
-    var newMessage = $("<div class='message'>" + total + "세트 <a href="+url+">경기영상</a><br>"+ txt +"</div>");
+    var newMessage = $("<div class='message'>" + total + "세트 <a href=" + url + ">경기영상</a><br>" + txt + "</div>");
 
     messageBoxA.append(newMessage);
     messages.unshift(newMessage);
@@ -118,7 +118,7 @@ function BaddMessage(url, txt) {
         TweenLite.to(url, 0.5, { y: pos });
     }
 
-    var newMessage = $("<div class='message'>" + total + "세트 <a href="+url+">경기영상</a><br>"+ txt +"</div>");
+    var newMessage = $("<div class='message'>" + total + "세트 <a href=" + url + ">경기영상</a><br>" + txt + "</div>");
 
     messageBoxB.append(newMessage);
     messages.unshift(newMessage);
@@ -185,7 +185,7 @@ document.getElementById('end-A').addEventListener("click", () => {
         console.log('A 득점!!')
     });
 
-    
+
 
     recorder.stopRecording(async () => {
         const fileObject = make_file_from_blob(recorder, 'A');
@@ -296,53 +296,13 @@ const get_my_playstyle = (fileName) => {
             timeout: 500000,
             success: function (data) {
 
-                const json = JSON.parse(data.responseText);
-                console.log("jsonp", data);
-                alert('A : ' + data.A.result + ' B : ' + data.B.result);
-                
-
-                request = new XMLHttpRequest();
-                request.open('GET', 'https://playstyle.s3.ap-northeast-2.amazonaws.com/results.json', true);
-
-                request.onload = function() {
-                if (request.status >= 200 && request.status < 400){
-                    // Success!
-                    data = JSON.parse(request.responseText);
-                    alert('A : ' + data.A.result + ' B : ' + data.A.result);
-                    const file_url = "https://playstyle.s3.ap-northeast-2.amazonaws.com/videos/"+fileName;
-
-                    AaddMessage(file_url, data.A.result);
-                    BaddMessage(file_url, data.A.result);
-                } else {
-                    // We reached our target server, but it returned an error
-
-                }
-                };
-
-                request.onerror = function() {
-                // There was a connection error of some sort
-                };
-
-                request.send();
-
-                // AaddMessage()
-                // AaddMessage()
-
-                $.ajax({
-                    url: myurl + '/history/analysis',
-                    method: 'POST',
-                    data: result,
-                    success: function (data) {
-                        console.log('history 등록', data);
-                    },
-                    error: function (data) {
-                        console.log('err', data.toString());
-                    }
-                });
+                // const json = JSON.parse(data.responseText);
+                // console.log("jsonp", data);
+                // alert('A : ' + data.A.result + ' B : ' + data.B.result);
             },
             error: function (xhr) {
 
-                alert(xhr);
+                // alert(xhr);
             }
         });
 
@@ -356,5 +316,44 @@ const get_my_playstyle = (fileName) => {
 
     } catch (error) {
         alert("분석실패");
+    } finally {
+        request = new XMLHttpRequest();
+        request.open('GET', 'https://playstyle.s3.ap-northeast-2.amazonaws.com/results.json', true);
+
+        request.onload = function () {
+            if (request.status >= 200 && request.status < 400) {
+                // Success!
+                data = JSON.parse(request.responseText);
+                alert('A : ' + data.A.result + ' B : ' + data.A.result);
+                const file_url = "https://playstyle.s3.ap-northeast-2.amazonaws.com/videos/" + fileName;
+
+                AaddMessage(file_url, data.A.result);
+                BaddMessage(file_url, data.A.result);
+            } else {
+                // We reached our target server, but it returned an error
+
+            }
+        };
+
+        request.onerror = function () {
+            // There was a connection error of some sort
+        };
+
+        request.send();
+
+        // AaddMessage()
+        // AaddMessage()
+
+        $.ajax({
+            url: myurl + '/history/analysis',
+            method: 'POST',
+            data: result,
+            success: function (data) {
+                console.log('history 등록', data);
+            },
+            error: function (data) {
+                console.log('err', data.toString());
+            }
+        });
     }
 }
