@@ -79,7 +79,7 @@ var messages = [];
 var height = 80;
 var startY = document.body.offsetHeight - height - 5;
 
-function AaddMessage(url) {
+function AaddMessage(url, txt) {
 
     var total = messages.length;
 
@@ -92,7 +92,7 @@ function AaddMessage(url) {
         TweenLite.to(url, 0.5, { y: pos });
     }
 
-    var newMessage = $("<div class='message'>" + total + "세트 <a href="+url+">경기영상</a> </div>");
+    var newMessage = $("<div class='message'>" + total + "세트 <a href="+url+">경기영상</a><br>"+ txt +"</div>");
 
     messageBoxA.append(newMessage);
     messages.unshift(newMessage);
@@ -105,7 +105,7 @@ function AaddMessage(url) {
     });
 }
 
-function BaddMessage(url) {
+function BaddMessage(url, txt) {
 
     var total = messages.length;
 
@@ -118,7 +118,7 @@ function BaddMessage(url) {
         TweenLite.to(url, 0.5, { y: pos });
     }
 
-    var newMessage = $("<div class='message'>" + total + "세트 <a href="+url+">경기영상</a> </div>");
+    var newMessage = $("<div class='message'>" + total + "세트 <a href="+url+">경기영상</a><br>"+ txt +"</div>");
 
     messageBoxB.append(newMessage);
     messages.unshift(newMessage);
@@ -190,9 +190,6 @@ document.getElementById('end-A').addEventListener("click", () => {
     recorder.stopRecording(async () => {
         const fileObject = make_file_from_blob(recorder, 'A');
         await upload_to_server(fileObject);
-        const file_url = "https://playstyle.s3.ap-northeast-2.amazonaws.com/videos/"+fileObject.name;
-        AaddMessage(file_url);
-
         get_my_playstyle(fileObject.name);
     });
 });
@@ -212,8 +209,6 @@ end_B_Btn.addEventListener("click", () => {
     recorder.stopRecording(async () => {
         const fileObject = make_file_from_blob(recorder, 'B');
         await upload_to_server(fileObject);
-        const file_url = "https://playstyle.s3.ap-northeast-2.amazonaws.com/videos/"+fileObject.name;
-        BaddMessage(file_url);
         get_my_playstyle(fileObject.name);
     });
 });
@@ -294,37 +289,42 @@ const get_my_playstyle = (fileName) => {
 
         const url = "https://analysis.myplaystyle.shop/analysis/" + fileName;
 
-        // const xhr = new XMLHttpRequest();
-
-        // $.getJSON(url + "?callback=?", function(data) {
-        //     console.log("jsonp", data);
-        //     alert('A : ' + data.A.result + ' B : ' + data.B.result);
-            
-        //     AaddMessage()
-        //     AaddMessage()
-
-        //     $.ajax({
-        //         url: myurl + '/history/analysis',
-        //         method: 'POST',
-        //         data: result,
-        //         success: function (data) {
-        //             console.log('history 등록', data);
-        //         },
-        //         error: function (data) {
-        //             console.log('err', data.toString());
-        //         }
-        //     });
-        // });
-
         $.ajax({
             url: "https://analysis.myplaystyle.shop/analysis/" + fileName,
             dataType: 'jsonp',
             jsonpCallback: 'myCallback',
             timeout: 500000,
             success: function (data) {
+
+                const json = JSON.parse(data.responseText);
                 console.log("jsonp", data);
                 alert('A : ' + data.A.result + ' B : ' + data.B.result);
                 
+
+                request = new XMLHttpRequest();
+                request.open('GET', 'https://playstyle.s3.ap-northeast-2.amazonaws.com/results.json', true);
+
+                request.onload = function() {
+                if (request.status >= 200 && request.status < 400){
+                    // Success!
+                    data = JSON.parse(request.responseText);
+                    alert('A : ' + data.A.result + ' B : ' + data.A.result);
+                    const file_url = "https://playstyle.s3.ap-northeast-2.amazonaws.com/videos/"+fileName;
+
+                    AaddMessage(file_url, data.A.result);
+                    BaddMessage(file_url, data.A.result);
+                } else {
+                    // We reached our target server, but it returned an error
+
+                }
+                };
+
+                request.onerror = function() {
+                // There was a connection error of some sort
+                };
+
+                request.send();
+
                 // AaddMessage()
                 // AaddMessage()
 
@@ -341,6 +341,7 @@ const get_my_playstyle = (fileName) => {
                 });
             },
             error: function (xhr) {
+
                 alert(xhr);
             }
         });
