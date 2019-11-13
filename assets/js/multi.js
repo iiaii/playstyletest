@@ -192,8 +192,7 @@ document.getElementById('end-A').addEventListener("click", () => {
     recorder.stopRecording(async () => {
         const fileObject = make_file_from_blob(recorder, 'A');
         await upload_to_server(fileObject);
-        let tmp = await fileName.split('.');
-        get_my_playstyle(fileObject.name, tmp[0]+".json");
+        get_my_playstyle(fileObject.name);
     });
 });
 
@@ -212,8 +211,7 @@ end_B_Btn.addEventListener("click", () => {
     recorder.stopRecording(async () => {
         const fileObject = make_file_from_blob(recorder, 'B');
         await upload_to_server(fileObject);
-        let tmp = await fileName.split('.');
-        get_my_playstyle(fileObject.name, tmp[0]+".json");
+        get_my_playstyle(fileObject.name);
     });
 });
 
@@ -238,7 +236,7 @@ setInterval(function () {
 // 블롭으로 부터 파일 객체 생성
 const make_file_from_blob = (recorder, player) => {
     const blob = recorder.getBlob()
-    const fileName = player_a.value + '' + player_b.value + '_' + player + '_' + (++uploadNum) + '.mkv';
+    const fileName = player_a.value + '_' + player_b.value + '_' + player + '_' + (++uploadNum) + '.mkv';
 
     return new File(
         [blob],
@@ -321,8 +319,9 @@ const get_my_playstyle = (fileName,jsonName) => {
     } catch (error) {
         alert("분석실패");
     } finally {
+        let tmp = fileName.split('.');
         request = new XMLHttpRequest();
-        request.open('GET', "https://playstyle.s3.ap-northeast-2.amazonaws.com/"+jsonName, true);
+        request.open('GET', "https://playstyle.s3.ap-northeast-2.amazonaws.com/"+tmp[0]+".json", true);
 
         request.onload = function () {
             if (request.status >= 200 && request.status < 400) {
