@@ -192,7 +192,8 @@ document.getElementById('end-A').addEventListener("click", () => {
     recorder.stopRecording(async () => {
         const fileObject = make_file_from_blob(recorder, 'A');
         await upload_to_server(fileObject);
-        get_my_playstyle(fileObject.name);
+        let tmp = await fileName.split('.');
+        get_my_playstyle(fileObject.name, tmp[0]+".json");
     });
 });
 
@@ -211,7 +212,8 @@ end_B_Btn.addEventListener("click", () => {
     recorder.stopRecording(async () => {
         const fileObject = make_file_from_blob(recorder, 'B');
         await upload_to_server(fileObject);
-        get_my_playstyle(fileObject.name);
+        let tmp = await fileName.split('.');
+        get_my_playstyle(fileObject.name, tmp[0]+".json");
     });
 });
 
@@ -285,7 +287,7 @@ const upload_to_server = async (fileObject) => {
 }
 
 // 영상 분석 서버에서 분석 결과 가져오기
-const get_my_playstyle = (fileName) => {
+const get_my_playstyle = (fileName,jsonName) => {
     try {
         console.log(fileName + " 분석시작");
 
@@ -320,15 +322,14 @@ const get_my_playstyle = (fileName) => {
         alert("분석실패");
     } finally {
         request = new XMLHttpRequest();
-        request.open('GET', 'https://playstyle.s3.ap-northeast-2.amazonaws.com/results.json', true);
+        request.open('GET', "https://playstyle.s3.ap-northeast-2.amazonaws.com/"+jsonName, true);
 
         request.onload = function () {
             if (request.status >= 200 && request.status < 400) {
                 // Success!
                 data = JSON.parse(request.responseText);
                 // alert('A : ' + data.A.result + ' B : ' + data.A.result);
-                let tmp = fileName.split('.');
-                const file_url = "https://playstyle.s3.ap-northeast-2.amazonaws.com/videos/" + tmp[0]+".json";
+                const file_url = "https://playstyle.s3.ap-northeast-2.amazonaws.com/videos/"+fileName;
 
                 AaddMessage(file_url, data.A.result);
                 BaddMessage(file_url, data.B.result);
