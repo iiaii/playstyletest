@@ -74,31 +74,33 @@ const room_id = '1';
 
 var messageBoxA = $('#message-box-A');
 var messageBoxB = $('#message-box-B');
-var messages = [];
+var messagesA = [];
+var messagesB = [];
 
-var height = 80;
-var startY = document.body.offsetHeight - height - 5;
+var heightA = 80;
+var heightB = 80;
+var AstartY = document.body.offsetHeight - heightA - 5;
+var BstartY = document.body.offsetHeight - heightB - 5;
 
 function AaddMessage(url, txt) {
 
-    var total = messages.length;
+    var total = messagesA.length;
 
     for (var i = 0; i < total; i++) {
-
-        // var url = messages[i];
+        var msg = messagesA[i];
         //var pos = startY - ((i + 1) * height);
-        var pos = -((i + 1) * height);
+        var pos = -((i + 1) * heightA);
 
-        TweenLite.to(url, 0.5, { y: pos });
+        TweenLite.to(msg, 0.5, { y: pos });
     }
 
     var newMessage = $("<div class='message'>" + total + "세트 <a href=" + url + ">경기영상</a><br>" + txt + "</div>");
 
     messageBoxA.append(newMessage);
-    messages.unshift(newMessage);
+    messagesA.unshift(newMessage);
 
     TweenLite.fromTo(newMessage, 0.5, {
-        y: height * 2
+        y: heightA * 2
     }, {
         y: 0,
         autoAlpha: 1
@@ -107,24 +109,24 @@ function AaddMessage(url, txt) {
 
 function BaddMessage(url, txt) {
 
-    var total = messages.length;
+    var total = messagesB.length;
 
     for (var i = 0; i < total; i++) {
 
-        // var url = messages[i];
+        var msg = messagesB[i];
         //var pos = startY - ((i + 1) * height);
-        var pos = -((i + 1) * height);
+        var pos = -((i + 1) * heightB);
 
-        TweenLite.to(url, 0.5, { y: pos });
+        TweenLite.to(msg, 0.5, { y: pos });
     }
 
     var newMessage = $("<div class='message'>" + total + "세트 <a href=" + url + ">경기영상</a><br>" + txt + "</div>");
 
     messageBoxB.append(newMessage);
-    messages.unshift(newMessage);
+    messagesB.unshift(newMessage);
 
     TweenLite.fromTo(newMessage, 0.5, {
-        y: height * 2
+        y: heightB * 2
     }, {
         y: 0,
         autoAlpha: 1
@@ -324,11 +326,11 @@ const get_my_playstyle = (fileName) => {
             if (request.status >= 200 && request.status < 400) {
                 // Success!
                 data = JSON.parse(request.responseText);
-                alert('A : ' + data.A.result + ' B : ' + data.A.result);
+                // alert('A : ' + data.A.result + ' B : ' + data.A.result);
                 const file_url = "https://playstyle.s3.ap-northeast-2.amazonaws.com/videos/" + fileName;
 
                 AaddMessage(file_url, data.A.result);
-                BaddMessage(file_url, data.A.result);
+                BaddMessage(file_url, data.B.result);
             } else {
                 // We reached our target server, but it returned an error
 
