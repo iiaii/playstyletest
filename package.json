@@ -11,7 +11,7 @@
     "url": "https://git.heroku.com/jjapaguri.git"
   },
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "node-static": "^0.7.10",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.8",
